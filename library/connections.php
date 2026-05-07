@@ -4,11 +4,12 @@ function phpmotorsConnect()
 {
 /* Proxy connection to the phpmotors database */
 
-    $server = 'localhost';
-    $dbname = 'phpmotors';
-    $username = 'iClient';
-    $password = 'jSOIy]RCf1vmI)bQ';
-    $dsn = "mysql:host=$server;dbname=$dbname";
+    $server = getenv('DB_HOST') ?: getenv('MYSQLHOST') ?: 'localhost';
+    $port = getenv('DB_PORT') ?: getenv('MYSQLPORT') ?: '3306';
+    $dbname = getenv('DB_NAME') ?: getenv('MYSQLDATABASE') ?: 'phpmotors';
+    $username = getenv('DB_USER') ?: getenv('MYSQLUSER') ?: 'iClient';
+    $password = getenv('DB_PASSWORD') ?: getenv('MYSQLPASSWORD') ?: 'jSOIy]RCf1vmI)bQ';
+    $dsn = "mysql:host=$server;port=$port;dbname=$dbname;charset=utf8mb4";
     $options = array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION);
 
     try {

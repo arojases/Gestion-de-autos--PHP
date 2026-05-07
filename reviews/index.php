@@ -45,7 +45,7 @@ switch ($action){
         $AddReviewReport = addReview($newReview, $vehicleId, $clientId);
 
         // Check and report the result
-        if($AddClassReport === 1){
+        if($AddReviewReport === 1){
             $message = "<p>Review has been added.</p>";
             header('Location: ' . $_SERVER['HTTP_REFERER']);
             exit;

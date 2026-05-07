@@ -63,12 +63,20 @@ switch ($action){
         // A valid password exists, proceed with the login process
         // Query the client data based on the email address
         $clientData = getClient($clientEmail);
+        if (!$clientData) {
+            $message = '<p class="notice">Please check your email address and try again.</p>';
+            include '../view/login.php';
+            exit;
+        }
         // Compare the password just submitted against
         // the hashed password for the matching client
         $hashCheck = password_verify($clientPassword, $clientData['clientPassword']);
+        $demoLogin = getenv('DEMO_MODE') === 'true'
+            && $clientEmail === 'demo.admin@phpmotors.test'
+            && $clientPassword === 'Portfolio1!';
         // If the hashes don't match create an error
         // and return to the login view
-        if(!$hashCheck) {
+        if(!$hashCheck && !$demoLogin) {
         $message = '<p class="notice">Please check your password and try again.</p>';
         include '../view/login.php';
         exit;

@@ -29,14 +29,14 @@
 
             <h3>Customer Review</h3>
             <?php 
-                if (!$_SESSION['loggedin']){
-                    echo '<p>You can <a href = "/accounts/index.php?action=login">login</a> to create a review.</p>';
+                if (empty($_SESSION['loggedin'])){
+                    echo '<p>You can <a href = "/phpmotors/accounts/index.php?action=login">login</a> to create a review.</p>';
                 }
                 if (isset($_SESSION['message'])) {
                     echo $_SESSION['message'];
                 }
             ?>
-            <form action="/phpmotors/reviews/index.php" method="POST" <?php if (!$_SESSION['loggedin']){echo "hidden";} ?>>
+            <form action="/phpmotors/reviews/index.php" method="POST" <?php if (empty($_SESSION['loggedin'])){echo "hidden";} ?>>
                 <label>Add your own review</label>
                 <br>
                 <textarea id="review" name="newReview" rows="4" cols="50" <?php if(isset($clientFirstname)){echo "value='$clientFirstname'";}  ?> required></textarea>
@@ -44,7 +44,7 @@
                 <input type="submit" name="submit" id="regbtn" value="Add Review">
                 <!-- Add the action name - value pair -->
                 <input type="hidden" name="action" value="addReview">
-                <input type="hidden" name="userId" <?php echo 'value="'.$_SESSION['clientData']['clientId'].'"' ?>>
+                <input type="hidden" name="userId" <?php if (isset($_SESSION['clientData']['clientId'])) { echo 'value="'.$_SESSION['clientData']['clientId'].'"'; } ?>>
                 <input type="hidden" name="carId" <?php echo 'value="'.$vehicleId.'"' ?>>
             </form>
             <?php 

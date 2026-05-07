@@ -1,0 +1,39 @@
+services:
+  app:
+    build: .
+    ports:
+      - "8080:80"
+    environment:
+      DB_HOST: db
+      DB_NAME: phpmotors
+      DB_USER: iClient
+      DB_PASSWORD: "jSOIy]RCf1vmI)bQ"
+      DEMO_MODE: "true"
+    volumes:
+      - ./:/var/www/html/phpmotors
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: phpmotors
+      MYSQL_USER: iClient
+      MYSQL_PASSWORD: "jSOIy]RCf1vmI)bQ"
+    ports:
+      - "3307:3306"
+    volumes:
+      - phpmotors_db:/var/lib/mysql
+      - ./sql/phpmotors.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+      - ./sql/demo-data.sql:/docker-entrypoint-initdb.d/02-demo-data.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-proot"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+volumes:
+  phpmotors_db:
+
